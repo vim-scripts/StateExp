@@ -1,0 +1,12 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1695
+
+The main point this script targets to is to ease writing code. Just type sw<ctrl-s> and you get a complete switch(){case;break;}  statement. 
+But it can also be used to add a header to a letter, etc. What to expand and how to expand can easily be configured.          
+                                                                    
+To invoke the statement expansion, type a short form of a statement and press <ctrl-s> in insert mode.                        
+  Memory aid: s (s)tatement expansion                               
+The statement will be expanded. By default the most important C statements are defined. 
+                                                                    
+Press <leader>sh to get a list of defined statements.               
+  Memory aid: sh (s)tatement expansion (h)elp                       
+ 
