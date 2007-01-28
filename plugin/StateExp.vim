@@ -20,10 +20,14 @@
 "**            PURPOSE.                                                     **
 "**            See the GNU General Public License for more details.         **
 "**                                                                         **
-"** Version:   1.0.0                                                        **
+"** Version:   1.01.00                                                      **
 "**            tested under Windows (gvim 7.0)                              **
 "**                                                                         **
-"** History:   1.0.0  26. Oct. 2006                                         **
+"** History:   1.01.00  27. Oct. 2006                                       **
+"**              - better alignment of help page if statements are not all  **
+"**                of the same length                                       **
+"**              - new statement: 'else { }'                                **
+"**            1.00.00  26. Oct. 2006                                       **
 "**              initial version                                            **
 "**                                                                         **
 "*****************************************************************************
@@ -42,6 +46,7 @@
 "**                                                                         **
 "**     'if'   'if (  ) { }'                                                **
 "**     'ie'   'if (  ) { } else { }'                                       **
+"**     'el'   'else { }'                                                   **
 "**     'fo'   'for ( ; ; ) { }'                                            **
 "**     'wh'   'while (  ) { }'                                             **
 "**     'do'   'do { } while (  )'                                          **
@@ -171,6 +176,7 @@ if !exists ( 'g:sexp_stats' )
     let g:sexp_stats =   [ 
                           \    [ "if", "if (  )\n{\n\n}",                5, 0 ], 
                           \    [ "ie", "if (  )\n{\n\n}\nelse\n{\n\n}",  5, 0 ], 
+                          \    [ "el", "else\n{\n\n}",                   4, 2 ], 
                           \    [ "fo", "for ( ; ; )\n{\n\n}",            6, 0 ], 
                           \    [ "wh", "while (  )\n{\n\n}",             8, 0 ], 
                           \    [ "do", "do\n{\n\n} while (  )",         10, 3 ], 
@@ -310,7 +316,8 @@ function <SID>sexp_ViewHelp()
     " layout in the help screen
     for item in g:sexp_stats
         let txt = txt."  ".item[ 0 ]
-        let txt = txt."    "
+        " use a tab to align next column; to change width of tab see 'tabstop' in OpenViewBuffer()
+        let txt = txt."\t"
         let reducedExp = substitute( item[ 1 ],  "\n", " ",  "g" )
         let reducedExp = substitute( reducedExp, "\t", "  ", "g" )
         let txt = txt.reducedExp
@@ -404,12 +411,14 @@ function s:OpenViewBuffer()
     "   - buftype=nowrite:  buffer will not be written
     "   - bufhidden=delete: delete this buffer if it will be hidden
     "   - nowrap:           don't wrap around long lines
+    "   - tabstop:          tab width, used to align text in help page
     "   - iabclear:         no abbreviations in insert mode
     setlocal nomodifiable
     setlocal noswapfile
     setlocal buftype=nowrite
     setlocal bufhidden=delete
     setlocal nowrap
+    setlocal tabstop=10
     iabclear <buffer>
 
 endfunction
